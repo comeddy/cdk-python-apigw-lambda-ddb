@@ -4,7 +4,7 @@ CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성합니다.
 
 
 # Prerequisites
-aws-cdk 를 최신버전으로 설치합니다. 
+AWS Cloud9을 us-east-1리전에 구성한후, aws-cdk 를 최신버전으로 설치합니다. 
 
 ```
 $ npm install -g aws-cdk --force
@@ -13,6 +13,8 @@ $ npm install -g aws-cdk --force
 ```
 $ cdk --version
 ```
+$ cdk --version
+1.114.0 (build 7e41b6b)
 
 ## Project creation
 
@@ -92,7 +94,7 @@ $ mkdir lambda
 
 lambda/app.py 코드를 작성합니다.
 
-```
+```python
 import json
 import boto3
 import os
@@ -133,7 +135,7 @@ def lambda_handler(event, context):
 
 프로젝트 root 디렉토리 app.py을 다음과 같이 수정합니다.
 
-```
+```python
 #!/usr/bin/env python3
 
 from aws_cdk import (
@@ -188,10 +190,9 @@ app.synth()
 
 ```
 $ cdk bootstrap
- ⏳  Bootstrapping environment aws://************/us-east-1...
- ✅  Environment aws://************/us-east-1 bootstrapped (no changes).
 ```
-
+ ⏳  Bootstrapping environment aws://************/us-east-1...
+ ✅  Environment aws://*************/us-east-1 bootstrapped (no changes).
 
 # Deploy
 
@@ -199,10 +200,10 @@ $ cdk bootstrap
 $ cdk deploy
 ```
 
-# Validation
+# Tests
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://2e2gjcinvl.execute-api.us-east-1.amazonaws.com/prod/ddb
+$ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://**********.execute-api.us-east-1.amazonaws.com/prod/ddb
 {"message": "succeeded"}
 ```
 
