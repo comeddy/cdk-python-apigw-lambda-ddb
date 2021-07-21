@@ -1,34 +1,47 @@
 #!/usr/bin/env python3
-import os
 
-from aws_cdk import core as cdk
+from aws_cdk import (
+    aws_apigateway,
+    aws_lambda,
+    aws_dynamodb,
+    core
+)
 
-# For consistency with TypeScript code, `cdk` is the preferred import name for
-# the CDK's core module.  The following line also imports it as `core` for use
-# with examples from the CDK Developer's Guide, which are in the process of
-# being updated to use `cdk`.  You may delete this import if you don't need it.
-from aws_cdk import core
+from aws_cdk.aws_dynamodb import (
+    Table,
+    Attribute,
+    AttributeType
+)
 
-from cdk.cdk_stack import CdkStack
+class LambdaSampleStack(core.Stack):
 
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        handler = aws_lambda.Function(
+            self, "backend",
+            runtime=aws_lambda.Runtime.PYTHON_3_8,
+            handler="app.lambda_handler",
+            code=aws_lambda.AssetCode(path="./lambda"))
+
+        api = aws_apigateway.LambdaRestApi(self, "SampleLambda", handler=handler, proxy=False)
+        api.root.add_resource("ddb").add_method("POST")
+
+        table = Table(
+            self, "ItemsTable",
+            table_name="Demo",
+            partition_key=Attribute(
+                name="Key",
+                type=AttributeType.STRING
+            ),
+            sort_key=Attribute(
+                name="CreateDate",
+                type=AttributeType.STRING
+            )
+        )
+        table.grant_write_data(handler)
 
 app = core.App()
-CdkStack(app, "CdkStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
-
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
-
-    #env=core.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
-
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=core.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-    )
+LambdaSampleStack(app, "LambdaSampleStack")
 
 app.synth()

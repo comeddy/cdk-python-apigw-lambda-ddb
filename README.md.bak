@@ -1,34 +1,4 @@
 
-<h1>Introduction</h1>
-CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성합니다. 
-
-
-<h1>Prerequisites</h1>
-
-aws-cdk 를 최신버전으로 설치합니다. 
-
-```
-$ npm install -g aws-cdk --force
-```
-버전을 확인합니다.
-```
-$ cdk --version
-```
-
-샘플코드 작성
-
-```
-$ mkdir cdk
-$ cd cdk
-```
-
-CDK 명령어를 이용해서 프로젝트를 만들어봅니다.
-
-```
-$ cdk init --language=python
-```
-Applying project template app for python
-
 # Welcome to your CDK Python project!
 
 This is a blank project for Python development with CDK.
@@ -59,20 +29,6 @@ If you are a Windows platform, you would activate the virtualenv like this:
 
 ```
 % .venv\Scripts\activate.bat
-```
-
-모듈 추가
-
-Setup.py에 필요한 모듈을 추가합니다.
-apigateway, lambda, dynamodb를 함께 추가합니다.
-
-```
-    install_requires=[
-        "aws-cdk.core==1.114.0",
-        "aws-cdk.aws-apigateway",
-        "aws-cdk.aws-lambda",
-        "aws-cdk.aws-dynamodb"
-    ],
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
