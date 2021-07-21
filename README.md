@@ -1,9 +1,9 @@
 
-<h1>Introduction</h1>
+# Introduction
 CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성합니다. 
 
 
-<h1>Prerequisites</h1>
+# Prerequisites
 
 aws-cdk 를 최신버전으로 설치합니다. 
 
@@ -15,7 +15,7 @@ $ npm install -g aws-cdk --force
 $ cdk --version
 ```
 
-샘플코드 작성
+CDK 작업디렉토리 생성합니다.
 
 ```
 $ mkdir cdk
@@ -61,7 +61,7 @@ If you are a Windows platform, you would activate the virtualenv like this:
 % .venv\Scripts\activate.bat
 ```
 
-모듈 추가
+## 모듈 추가
 
 Setup.py에 필요한 모듈을 추가합니다.
 apigateway, lambda, dynamodb를 함께 추가합니다.
