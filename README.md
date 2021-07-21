@@ -69,7 +69,7 @@ If you are a Windows platform, you would activate the virtualenv like this:
 Setup.py에 필요한 모듈을 추가합니다.
 apigateway, lambda, dynamodb를 함께 추가합니다.
 
-```
+```python
     install_requires=[
         "aws-cdk.core==1.114.0",
         "aws-cdk.aws-apigateway",
@@ -202,7 +202,7 @@ $ cdk deploy
 
 # Tests
 
-```
+```shell
 $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://**********.execute-api.us-east-1.amazonaws.com/prod/ddb
 {"message": "succeeded"}
 ```
