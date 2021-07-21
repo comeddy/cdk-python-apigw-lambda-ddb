@@ -4,7 +4,6 @@ CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성합니다.
 
 
 # Prerequisites
-
 aws-cdk 를 최신버전으로 설치합니다. 
 
 ```
@@ -14,6 +13,8 @@ $ npm install -g aws-cdk --force
 ```
 $ cdk --version
 ```
+
+## Project creation
 
 CDK 작업디렉토리 생성합니다.
 
@@ -61,7 +62,7 @@ If you are a Windows platform, you would activate the virtualenv like this:
 % .venv\Scripts\activate.bat
 ```
 
-## 모듈 추가
+## Add module
 
 Setup.py에 필요한 모듈을 추가합니다.
 apigateway, lambda, dynamodb를 함께 추가합니다.
@@ -81,11 +82,130 @@ Once the virtualenv is activated, you can install the required dependencies.
 $ pip install -r requirements.txt
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+# Lambda code
+
+디렉토리를 만들고 그 아래 다음 코드를 작성합니다.
 
 ```
-$ cdk synth
+$ mkdir lambda
 ```
+
+lambda/app.py 코드를 작성합니다.
+
+```
+import json
+import boto3
+import os
+from datetime import datetime
+
+def lambda_handler(event, context):
+    try:
+        event_body = json.loads(event["body"])
+        if "local" in event_body and event_body["local"] == True:
+            dynamodb = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000")
+        else:
+            dynamodb = boto3.resource("dynamodb")
+
+        table = dynamodb.Table("Demo")
+        table.put_item(
+            Item={
+                "Key": event_body["key"],
+                "CreateDate": datetime.utcnow().isoformat()
+            }
+        )
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "message": "succeeded",
+            }),
+        }
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "message": e.args
+            }),
+    }
+```
+
+# Deployment & Provisioning code creation
+
+프로젝트 root 디렉토리 app.py을 다음과 같이 수정합니다.
+
+```
+#!/usr/bin/env python3
+
+from aws_cdk import (
+    aws_apigateway,
+    aws_lambda,
+    aws_dynamodb,
+    core
+)
+
+from aws_cdk.aws_dynamodb import (
+    Table,
+    Attribute,
+    AttributeType
+)
+
+class LambdaSampleStack(core.Stack):
+
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        handler = aws_lambda.Function(
+            self, "backend",
+            runtime=aws_lambda.Runtime.PYTHON_3_8,
+            handler="app.lambda_handler",
+            code=aws_lambda.AssetCode(path="./lambda"))
+
+        api = aws_apigateway.LambdaRestApi(self, "SampleLambda", handler=handler, proxy=False)
+        api.root.add_resource("ddb").add_method("POST")
+
+        table = Table(
+            self, "ItemsTable",
+            table_name="Demo",
+            partition_key=Attribute(
+                name="Key",
+                type=AttributeType.STRING
+            ),
+            sort_key=Attribute(
+                name="CreateDate",
+                type=AttributeType.STRING
+            )
+        )
+        table.grant_write_data(handler)
+
+app = core.App()
+LambdaSampleStack(app, "LambdaSampleStack")
+
+app.synth()
+```
+
+
+# Ready to deploy
+
+```
+$ cdk bootstrap
+ ⏳  Bootstrapping environment aws://************/us-east-1...
+ ✅  Environment aws://************/us-east-1 bootstrapped (no changes).
+```
+
+
+# Deploy
+
+```
+$ cdk deploy
+```
+
+# Validation
+
+```
+$ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://2e2gjcinvl.execute-api.us-east-1.amazonaws.com/prod/ddb
+{"message": "succeeded"}
+```
+
 
 To add additional dependencies, for example other CDK libraries, just add
 them to your `setup.py` file and rerun the `pip install -r requirements.txt`
