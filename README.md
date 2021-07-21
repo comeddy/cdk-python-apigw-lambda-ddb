@@ -1,15 +1,16 @@
 
 # Introduction
-CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성합니다. 
+CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성해봅니다. 
 
 
 # Prerequisites
-AWS Cloud9을 us-east-1리전에 구성한후, aws-cdk 를 최신버전으로 설치합니다. 
+AWS Cloud9을 us-east-1 리전에 구성한후, aws-cdk를 최신버전으로 설치합니다.(option --force)
 
 ```
 $ npm install -g aws-cdk --force
 ```
-버전을 확인합니다.
+
+CDK 버전을 확인합니다.
 ```
 $ cdk --version
 ```
