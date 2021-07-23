@@ -82,6 +82,7 @@ apigateway, lambda, dynamodb를 함께 추가합니다.
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
+To add additional dependencies, for example other CDK libraries, just add them to your setup.py file and rerun the pip install -r requirements.txt command.
 
 ```
 $ pip install -r requirements.txt
@@ -211,9 +212,6 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' htt
 ```
 
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
 
 ## Useful commands
 
