@@ -4,7 +4,7 @@ CDK를 이용해 API Gateway, Lambda, DynamoDB를 생성해봅니다.
 
 
 # Prerequisites
-AWS Cloud9을 us-east-1 리전에 구성한후, aws-cdk를 최신버전으로 설치합니다.(option --force)
+AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한후, aws-cdk를 최신버전으로 설치합니다.(option --force)
 
 - Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
 - Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
@@ -16,8 +16,8 @@ $ npm install -g aws-cdk --force
 ```
 $ cdk --version
 ```
-$ cdk --version
-1.114.0 (build 7e41b6b)
+$ cdk --version 
+1.115.0 (build 7e41b6b)
 
 ## Project creation
 
@@ -74,7 +74,7 @@ apigateway, lambda, dynamodb를 함께 추가합니다.
 
 ```python
     install_requires=[
-        "aws-cdk.core==1.114.0",
+        "aws-cdk.core==1.115.0",
         "aws-cdk.aws-apigateway",
         "aws-cdk.aws-lambda",
         "aws-cdk.aws-dynamodb"
@@ -94,6 +94,7 @@ $ pip install -r requirements.txt
 
 ```
 $ mkdir lambda
+$ touch lambda/app.py
 ```
 
 lambda/app.py 코드를 작성합니다.
@@ -137,7 +138,8 @@ def lambda_handler(event, context):
 
 # Deployment & Provisioning code creation
 
-프로젝트 root 디렉토리 app.py을 다음과 같이 수정합니다.
+프로젝트 root 디렉토리 app.py을 다음과 같이 변경합니다.
+lambda 
 
 ```python
 #!/usr/bin/env python3
@@ -200,6 +202,7 @@ $ cdk bootstrap
 
 # Deploy
 
+Synthesize (cdk synth) or deploy (cdk deploy) the example
 ```
 $ cdk deploy
 ```
