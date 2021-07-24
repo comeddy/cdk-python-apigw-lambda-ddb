@@ -208,9 +208,9 @@ $ cdk deploy
 ```
 
 # Tests
-Outputs: 예시
-LambdaSampleStack.SampleLambdaEndpoint9FAA5D96 = https://mtocpm04rj.execute-api.us-east-2.amazonaws.com/prod
-Sample API endpoint의 resource 'ddb'에 POST request로 확인해봅니다.
+
+Outputs 예시) LambdaSampleStack.SampleLambdaEndpoint9FAA5D96 = https://mtocpm04rj.execute-api.us-east-1.amazonaws.com/prod
+Sample Lambda endpoint의 resource 'ddb'에 POST request후 DynamoDB Table을 확인해봅니다.
 ```shell
 $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://**********.execute-api.us-east-1.amazonaws.com/prod/ddb
 {"message": "succeeded"}
