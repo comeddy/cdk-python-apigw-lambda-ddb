@@ -1,7 +1,7 @@
 
 # Introduction
-본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 Python언어로 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.
-1개의 Stack으로 구성되어 있습니다. 차례대로 API Gateway, Lambda 그리고 DynamoDB를 작성해봅니다. 
+본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 Python언어로 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
+1개의 Stack으로 구성되어 있습니다. 차례대로 API Gateway, Lambda 그리고 DynamoDB를 작성해봅니다.
 - Local DynamoDB와 Amazon DynamoDB 각각 개발버전과 운영버전으로 선택가능합니다.   
 
 # Prerequisites
