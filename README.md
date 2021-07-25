@@ -193,6 +193,7 @@ app.synth()
 
 
 # Ready to deploy
+CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만 해주면 됩니다.
 
 ```
 $ cdk bootstrap
