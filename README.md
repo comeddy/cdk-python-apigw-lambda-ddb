@@ -94,10 +94,10 @@ $ pip install -r requirements.txt
 
 ```
 $ mkdir lambda
-$ touch lambda/app.py
+$ touch lambda/handler.py
 ```
 
-lambda/app.py 코드를 작성합니다.
+lambda/handler.py 코드를 작성합니다.
 
 ```python
 import json
@@ -165,7 +165,7 @@ class LambdaSampleStack(core.Stack):
         handler = aws_lambda.Function(
             self, "backend",
             runtime=aws_lambda.Runtime.PYTHON_3_8,
-            handler="app.lambda_handler",
+            handler="handler.lambda_handler",
             code=aws_lambda.AssetCode(path="./lambda"))
 
         api = aws_apigateway.LambdaRestApi(self, "SampleLambda", handler=handler, proxy=False)
