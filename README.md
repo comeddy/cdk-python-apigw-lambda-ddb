@@ -2,7 +2,8 @@
 # Introduction
 본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 Python언어로 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
 차례대로 Lambda, DynamoDB 그리고 API Gateway를 작성해봅니다.
-- Local DynamoDB와 Amazon DynamoDB 각각 개발버전과 운영버전으로 선택가능합니다.   
+- Sam을 이용한 Local lambda 와 DynamoDB 환경을 구성하여 로컬개발환경을 만들어봅니다.
+- CDK를 이용하여 lambda와 Amazon DynamoDB 클라우드 환경으로 만들어봅니다.   
 
 # Prerequisites
 AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
