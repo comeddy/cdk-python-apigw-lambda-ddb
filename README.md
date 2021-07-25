@@ -5,7 +5,7 @@
 - Local DynamoDB와 Amazon DynamoDB 각각 개발버전과 운영버전으로 선택가능합니다.   
 
 # Prerequisites
-AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한후, aws-cdk를 최신버전으로 설치합니다.(option --force)
+AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.(option --force)
 
 - Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
 - Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
@@ -29,7 +29,7 @@ $ mkdir cdk
 $ cd cdk
 ```
 
-CDK 명령어를 이용해서 python 프로젝트를 만들어봅니다.
+CDK init 명령어를 이용해서 python 프로젝트를 만들어봅니다.
 
 ```
 $ cdk init --language=python
@@ -49,20 +49,19 @@ directory.  To create the virtualenv it assumes that there is a `python3`
 package. If for any reason the automatic creation of the virtualenv fails,
 you can create the virtualenv manually.
 
-To manually create a virtualenv on MacOS and Linux:
+MacOS 및 Linux에서 virtualenv를 수동으로 생성하려면 아래와같이 실행합니다.
 
 ```
 $ python3 -m venv .venv
 ```
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+초기화 프로세스가 완료되고 virtualenv가 생성되면 다음 단계를 사용하여 virtualenv를 활성화할 수 있습니다.
 
 ```
 $ source .venv/bin/activate
 ```
 
-If you are a Windows platform, you would activate the virtualenv like this:
+Windows 플랫폼인 경우 다음과 같이 virtualenv를 활성화합니다.
 
 ```
 % .venv\Scripts\activate.bat
@@ -82,12 +81,22 @@ apigateway, lambda, dynamodb를 함께 추가합니다.
     ],
 ```
 
-Once the virtualenv is activated, you can install the required dependencies.
-To add additional dependencies, for example other CDK libraries, just add them to your setup.py file and rerun the pip install -r requirements.txt command.
+virtualenv가 활성화되면 필요한 종속성을 설치할 수 있습니다. <br>
+다른 CDK 라이브러리와 같은 추가 종속성을 추가하려면 setup.py 파일에 추가하고 pip install -r requirements.txt 명령을 다시 실행하기만 하면 됩니다.
 
 ```
 $ pip install -r requirements.txt
 ```
+
+# Ready to deploy
+CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만 실행해주면 됩니다.
+
+```
+$ cdk bootstrap
+```
+ ⏳  Bootstrapping environment aws://123456789012/us-east-1...<br>
+ ✅  Environment aws://123456789012/us-east-1 bootstrapped (no changes).
+
 
 # Lambda code
 
@@ -139,8 +148,7 @@ def lambda_handler(event, context):
 
 # Deployment & Provisioning code creation
 
-프로젝트 root 디렉토리 app.py을 다음과 같이 변경합니다.
-lambda 
+프로젝트 root 디렉토리의 app.py을 아래와 같이 변경합니다.
 
 ```python
 #!/usr/bin/env python3
@@ -192,15 +200,6 @@ LambdaSampleStack(app, "LambdaSampleStack")
 app.synth()
 ```
 
-
-# Ready to deploy
-CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만 해주면 됩니다.
-
-```
-$ cdk bootstrap
-```
- ⏳  Bootstrapping environment aws://123456789012/us-east-1...<br>
- ✅  Environment aws://123456789012/us-east-1 bootstrapped (no changes).
 
 # Deploy
 
