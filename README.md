@@ -20,7 +20,7 @@ $ cdk --version
 $ cdk --version 
 1.115.0 (build 7e41b6b)
 
-## Project creation
+# Project creation
 
 CDK 작업디렉토리 생성합니다.
 
@@ -67,7 +67,7 @@ Windows 플랫폼인 경우 다음과 같이 virtualenv를 활성화합니다.
 % .venv\Scripts\activate.bat
 ```
 
-## Add module
+# Add module
 
 Setup.py에 필요한 모듈을 추가합니다.
 apigateway, lambda, dynamodb를 함께 추가합니다.
