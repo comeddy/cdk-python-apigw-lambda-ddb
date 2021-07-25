@@ -22,7 +22,8 @@ setuptools.setup(
         "aws-cdk.core==1.115.0",
         "aws-cdk.aws-apigateway",
         "aws-cdk.aws-lambda",
-        "aws-cdk.aws-dynamodb"    
+        "aws-cdk.aws-dynamodb",
+        "boto3"
     ],
 
     python_requires=">=3.6",

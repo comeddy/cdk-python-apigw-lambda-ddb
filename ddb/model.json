@@ -1,0 +1,27 @@
+{
+  "TableName": "Demo",
+  "KeySchema": [
+    {
+      "AttributeName": "Key",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "CreateDate",
+      "KeyType": "RANGE"
+    }
+  ],
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "Key",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "CreateDate",
+      "AttributeType": "S"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

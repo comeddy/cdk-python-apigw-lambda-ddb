@@ -1,0 +1,340 @@
+Resources:
+  backendServiceRole77A15DC8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/backend/ServiceRole/Resource
+  backendServiceRoleDefaultPolicy78BAA8F9:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - ItemsTable5AAC2C46
+                  - Arn
+              - Ref: AWS::NoValue
+        Version: "2012-10-17"
+      PolicyName: backendServiceRoleDefaultPolicy78BAA8F9
+      Roles:
+        - Ref: backendServiceRole77A15DC8
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/backend/ServiceRole/DefaultPolicy/Resource
+  backendCBA98286:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416S3Bucket5417566B
+        S3Key:
+          Fn::Join:
+            - ""
+            - - Fn::Select:
+                  - 0
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416S3VersionKeyA4CB6A03
+              - Fn::Select:
+                  - 1
+                  - Fn::Split:
+                      - "||"
+                      - Ref: AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416S3VersionKeyA4CB6A03
+      Role:
+        Fn::GetAtt:
+          - backendServiceRole77A15DC8
+          - Arn
+      Handler: handler.lambda_handler
+      Runtime: python3.8
+    DependsOn:
+      - backendServiceRoleDefaultPolicy78BAA8F9
+      - backendServiceRole77A15DC8
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/backend/Resource
+      aws:asset:path: /home/ec2-user/environment/cdk/lambda
+      aws:asset:property: Code
+  SampleLambdaB2FF4FA1:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: SampleLambda
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Resource
+  SampleLambdaCloudWatchRole594B84E2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/CloudWatchRole/Resource
+  SampleLambdaAccount445E9D14:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn:
+        Fn::GetAtt:
+          - SampleLambdaCloudWatchRole594B84E2
+          - Arn
+    DependsOn:
+      - SampleLambdaB2FF4FA1
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Account
+  SampleLambdaDeploymentE755284304a4b8eddbe867db6f8d8c93f6fcc63e:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: SampleLambdaB2FF4FA1
+      Description: Automatically created by the RestApi construct
+    DependsOn:
+      - SampleLambdaddbPOSTAAA2A81B
+      - SampleLambdaddb3A6B768E
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Deployment/Resource
+  SampleLambdaDeploymentStageprod54C097A5:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId:
+        Ref: SampleLambdaB2FF4FA1
+      DeploymentId:
+        Ref: SampleLambdaDeploymentE755284304a4b8eddbe867db6f8d8c93f6fcc63e
+      StageName: prod
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/DeploymentStage.prod/Resource
+  SampleLambdaddb3A6B768E:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId:
+        Fn::GetAtt:
+          - SampleLambdaB2FF4FA1
+          - RootResourceId
+      PathPart: ddb
+      RestApiId:
+        Ref: SampleLambdaB2FF4FA1
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Default/ddb/Resource
+  SampleLambdaddbPOSTApiPermissionLambdaSampleStackSampleLambdaE19E2271POSTddbEB04B66F:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - backendCBA98286
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: SampleLambdaB2FF4FA1
+            - /
+            - Ref: SampleLambdaDeploymentStageprod54C097A5
+            - /POST/ddb
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Default/ddb/POST/ApiPermission.LambdaSampleStackSampleLambdaE19E2271.POST..ddb
+  SampleLambdaddbPOSTApiPermissionTestLambdaSampleStackSampleLambdaE19E2271POSTddb555E5335:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - backendCBA98286
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:"
+            - Ref: AWS::Region
+            - ":"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: SampleLambdaB2FF4FA1
+            - /test-invoke-stage/POST/ddb
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Default/ddb/POST/ApiPermission.Test.LambdaSampleStackSampleLambdaE19E2271.POST..ddb
+  SampleLambdaddbPOSTAAA2A81B:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId:
+        Ref: SampleLambdaddb3A6B768E
+      RestApiId:
+        Ref: SampleLambdaB2FF4FA1
+      AuthorizationType: NONE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri:
+          Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - ":apigateway:"
+              - Ref: AWS::Region
+              - :lambda:path/2015-03-31/functions/
+              - Fn::GetAtt:
+                  - backendCBA98286
+                  - Arn
+              - /invocations
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/SampleLambda/Default/ddb/POST/Resource
+  ItemsTable5AAC2C46:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      KeySchema:
+        - AttributeName: Key
+          KeyType: HASH
+        - AttributeName: CreateDate
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: Key
+          AttributeType: S
+        - AttributeName: CreateDate
+          AttributeType: S
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: Demo
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/ItemsTable/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAAA22QwU7DMAyGn2X3NFs0EFe2IU4gqsILuInpQpukShxNVdR3p0mZ1AOn/7Nl6/9twZMQj/ywe4ZbqKTq99J55OmTQPbsFALSgp22Hbs4G8hHSezybWvwYJDQ5+Ij0hiJNRhc9BJza8vLotKknZ2ZEA9br6xpANMq4Ok1Wpmn8sqWa/RGh1D2NRieGjesHllrN2g5lblCMwvHCnLuwEv8pebnKHukMwRkMOoOCG8w8fRWnJeodBr1X+o7nqR00RJ7wXFwk0Fbzt5U+S0lxgr3g4vJv594R7o6lVsrzUxNFoxTLU9f0K43FZjnmdXTMmP3R/7ExWH3E7Su/JJHG+TNqr/P6gCRuwEAAA==
+    Metadata:
+      aws:cdk:path: LambdaSampleStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Parameters:
+  AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416S3Bucket5417566B:
+    Type: String
+    Description: S3 bucket for asset "c7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416"
+  AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416S3VersionKeyA4CB6A03:
+    Type: String
+    Description: S3 key for asset version "c7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416"
+  AssetParametersc7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416ArtifactHash068B7C16:
+    Type: String
+    Description: Artifact hash for asset "c7ca91f7934c7a4b65cba7e53a2db4688c9fbc60330765614ede72d220f1b416"
+Outputs:
+  SampleLambdaEndpoint9FAA5D96:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: SampleLambdaB2FF4FA1
+          - .execute-api.
+          - Ref: AWS::Region
+          - "."
+          - Ref: AWS::URLSuffix
+          - /
+          - Ref: SampleLambdaDeploymentStageprod54C097A5
+          - /
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+
