@@ -1,11 +1,12 @@
 
 # Introduction
 본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 Python언어로 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
-1개의 Stack으로 구성되어 있습니다. 차례대로 API Gateway, Lambda 그리고 DynamoDB를 작성해봅니다.
+차례대로 Lambda, DynamoDB 그리고 API Gateway를 작성해봅니다.
 - Local DynamoDB와 Amazon DynamoDB 각각 개발버전과 운영버전으로 선택가능합니다.   
 
 # Prerequisites
-AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.(option --force)
+AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
+최신버전을 설치를 추천합니다.(강제옵션이 필요한 경우 option --force)
 
 - Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
 - Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
@@ -100,7 +101,7 @@ $ cdk bootstrap
 
 # Lambda code
 
-디렉토리를 만들고 그 아래 다음 코드를 작성합니다.
+디렉토리를 만들고 아래 다음 코드를 작성합니다.
 
 ```
 $ mkdir lambda
@@ -208,7 +209,7 @@ Synthesize (cdk synth) or deploy (cdk deploy) the example
 $ cdk deploy
 ```
 
-# Tests
+# Testing the app
 
 Sample Lambda endpoint의 resource 'ddb'에 POST로 요청후, DynamoDB Table Demo과 Items를 확인해봅니다.
 ```shell
@@ -216,6 +217,15 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' htt
 {"message": "succeeded"}
 ```
 
+정리하려면 다음 명령을 실행합니다(DynamoDB 테이블, CloudWatch 로그 또는 S3 버킷은 제거되지 않습니다. 수동으로 수행해야 함).
+```
+$ cdk destroy
+```
+
+To exit the virtualenv python environment:
+```
+$ deactivate
+```
 
 
 ## Useful commands
@@ -227,3 +237,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' htt
  * `cdk docs`        open CDK documentation
 
 Enjoy!
+
+This code has been tested and verified to run with AWS CDK 1.115.0 (build 7e41b6b)
+
+
