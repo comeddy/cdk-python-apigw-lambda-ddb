@@ -198,8 +198,8 @@ CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만
 ```
 $ cdk bootstrap
 ```
- ⏳  Bootstrapping environment aws://************/us-east-1...
- ✅  Environment aws://*************/us-east-1 bootstrapped (no changes).
+ ⏳  Bootstrapping environment aws://123456789012/us-east-1...<br>
+ ✅  Environment aws://123456789012/us-east-1 bootstrapped (no changes).
 
 # Deploy
 
