@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="cdk"),
 
     install_requires=[
-        "aws-cdk.core==1.114.0",
+        "aws-cdk.core==1.115.0",
         "aws-cdk.aws-apigateway",
         "aws-cdk.aws-lambda",
         "aws-cdk.aws-dynamodb"    
