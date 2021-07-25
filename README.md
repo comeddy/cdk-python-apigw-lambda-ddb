@@ -203,10 +203,10 @@ app.synth()
 ```
 
 # Local Lambda & DynamoDB Testing
-로컬 머신에서 실행할 수 있는 단일 Lambda 함수가 있는 간단한 CDK 스택이 있다고 상상해 보십시오.
-로컬에서 CDK로 빌드된 Lambda 함수를 실행하려면 어떻게 해야 합니까?
-AWS에 Deploy하기전에 로컬에서 Lambda함수를 테스트하기 위한 DynamoDB의 환경을 만들어봅니다.
-Sam을 이용한 local DynamoDB 테스트를 패스할경우, 아래 Deploy to AWS로 이동합니다. 
+로컬 머신에서 실행할 수 있는 단일 Lambda 함수가 있는 간단한 CDK 스택이 있다고 상상해 보십시오.<br>
+로컬에서 CDK로 빌드된 Lambda 함수를 실행하려면 어떻게 해야 합니까?<br>
+AWS에 Deploy하기전에 로컬에서 Lambda함수를 테스트하기 위한 DynamoDB의 환경을 만들어봅니다.<br>
+Sam을 이용한 local DynamoDB 테스트를 패스할경우, 아래 Deploy to AWS로 이동합니다. <br>
 
 ## Table define
 
@@ -295,7 +295,7 @@ $ aws dynamodb create-table --cli-input-json file://./ddb/model.json --endpoint-
 
 ## Run Lambda-Local 
 먼저 CloudFormation 템플릿을 생성하고 template.yaml 파일로 저장합니다.<br>
-cdk를 local에서 실행하기위해 sam 명령어를 실행하는데, 이때 template.yaml파일 필요합니다.
+cdk를 local에서 실행하기위해 sam 명령어를 실행하는데, 이때 template.yaml파일이 필요합니다.
 ```
 cdk synth --no-staging > template.yaml
 ```
@@ -308,7 +308,6 @@ $ sam local start-api --docker-network ddb-network
 Cloud9 터미널에서 curl 명령어로 'POST' 엑세스합니다.
 ```
 $ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data", "local": true}' http://127.0.0.1:3000/ddb
-
 ```
 
 ```
@@ -336,7 +335,6 @@ No Content-Type given. Defaulting to 'application/json'.
 실제로 데이터가 로컬 DynamoDB에 등록되어있는지 확인합니다.
 ```
 $ aws dynamodb scan --table-name Demo --endpoint-url http://localhost:8000
-
 ```
 
 ```json
