@@ -122,11 +122,15 @@ def lambda_handler(event, context):
     try:
         event_body = json.loads(event["body"])
         if "local" in event_body and event_body["local"] == True:
+            # Get the local service resource.
             dynamodb = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000")
         else:
+            # Get the service resource.
             dynamodb = boto3.resource("dynamodb")
 
         table = dynamodb.Table("Demo")
+        
+        # put item in table
         table.put_item(
             Item={
                 "Key": event_body["key"],
@@ -140,6 +144,7 @@ def lambda_handler(event, context):
                 "message": "succeeded",
             }),
         }
+        
     except Exception as e:
         return {
             "statusCode": 500,
@@ -173,16 +178,19 @@ class LambdaSampleStack(core.Stack):
 
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
-
+        
+        # create lambda function
         handler = aws_lambda.Function(
             self, "backend",
             runtime=aws_lambda.Runtime.PYTHON_3_8,
             handler="handler.lambda_handler",
             code=aws_lambda.AssetCode(path="./lambda"))
-
+        
+        # define the API endpoint and associate the handler
         api = aws_apigateway.LambdaRestApi(self, "SampleLambda", handler=handler, proxy=False)
         api.root.add_resource("ddb").add_method("POST")
 
+        # create dynamo table
         table = Table(
             self, "ItemsTable",
             table_name="Demo",
@@ -195,6 +203,8 @@ class LambdaSampleStack(core.Stack):
                 type=AttributeType.STRING
             )
         )
+        
+        # grant permission to lambda to write from demo table
         table.grant_write_data(handler)
 
 app = core.App()
