@@ -7,7 +7,7 @@
 
 # Prerequisites
 AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
-최신버전을 설치를 추천합니다.(강제옵션이 필요한 경우 option --force)
+최신버전 설치를 추천드립니다.(강제옵션이 필요한 경우 option --force)
 
 - Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
 - Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
@@ -214,7 +214,7 @@ app.synth()
 ```
 
 # Local Lambda & DynamoDB Testing
-Sam을 이용한 local DynamoDB 테스트를 패스하고 싶은경우, 아래 Deploy to AWS로 이동하여 Deploy 명령어어를 실행합니다. <br>
+이번엔 Sam을 이용한 local DynamoDB 테스트할 예정인데 패스하고 싶은경우, 아래 Deploy to AWS로 이동하시면 됩니다. <br>
 - 로컬 머신에서 실행할 수 있는 단일 Lambda 함수가 있는 간단한 CDK 스택이 있다고 상상해 보십시오.
 - 로컬에서 CDK로 빌드된 Lambda 함수를 실행하려면 어떻게 해야 합니까?
 - AWS에 Deploy하기전에 로컬에서 Lambda함수를 테스트하기 위한 DynamoDB의 환경을 만들어봅니다.
@@ -225,7 +225,8 @@ Sam을 이용한 local DynamoDB 테스트를 패스하고 싶은경우, 아래 D
 mkdir ddb
 touch ddb/model.json
 ```
-ddb 디렉토리를 만들고, 테이블 구조를 json 파일형식으로 작성합니다.
+ddb 디렉토리를 만들고, 테이블 구조를 json 파일형식으로 작성합니다.<br>
+DynamoDB Data Modeling 내용이 궁금하시면 [here](https://festive-giver-f02.notion.site/SEC-MC-Game-Launcher-e3b7c76ffd0b4492a7b3bdc7a14df90a) 
 
 ```json
 {
@@ -377,7 +378,7 @@ $ docker rm dynamodb
 
 
 # Deploy to AWS
-
+CDK deploy 명령어로 클라우드 배포를 진행합니다.
 Synthesize (cdk synth) or deploy (cdk deploy) the example
 ```
 $ cdk deploy
