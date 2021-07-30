@@ -1,23 +1,24 @@
 
 # Introduction
-본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 Python언어로 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
-차례대로 Lambda, DynamoDB 그리고 API Gateway를 작성해봅니다.
-- Sam을 이용한 Local lambda 와 DynamoDB 환경을 구성하여 로컬개발환경을 만들어봅니다.
-- CDK를 이용하여 lambda와 Amazon DynamoDB 클라우드 환경으로 만들어봅니다.   
+본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
+Python언어을 이용하여 차례대로 Lambda, DynamoDB 그리고 API Gateway를 구성해봅니다.
+- CDK를 이용하여 API Gateway, lambda와 Amazon DynamoDB 클라우드 환경으로 Stack을 배포해봅니다.   
+- SAM을 이용하여 Local lambda를 호출해 Local Container DynamoDB를 구성한 로컬개발환경도 만들어봅니다.
+
 
 # Prerequisites
-AWS Cloud9을 원하는 리전(e.g., us-east-1, ap-northeast-2 등)에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
-최신버전 설치를 추천드립니다.(강제옵션이 필요한 경우 option --force)
+사용자는 AWS Cloud9을 원하는 리전에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
+CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요한 경우 option --force)
 
 - Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
 - Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
 ```
-$ npm install -g aws-cdk --force
+npm install -g aws-cdk --force
 ```
 
-설치된 CDK 버전을 확인합니다.
+설치된 CDK버전을 확인합니다.
 ```
-$ cdk --version
+cdk --version
 ```
 $ cdk --version 
 1.115.0 (build 7e41b6b)
@@ -27,40 +28,40 @@ $ cdk --version
 CDK 작업디렉토리 생성합니다.
 
 ```
-$ mkdir cdk
-$ cd cdk
+mkdir cdk
+cd cdk
 ```
 
 CDK init 명령어를 이용해서 python 프로젝트를 만들어봅니다.
 
 ```
-$ cdk init --language=python
+cdk init --language=python
 ```
 Applying project template app for python
 
 # Welcome to your CDK Python project!
 
-This is a blank project for Python development with CDK.
+이것은 CDK를 사용한 Python 개발을 위한 빈 프로젝트입니다.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+`cdk.json` 파일은 CDK Toolkit에 앱을 실행하는 방법을 알려줍니다.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+이 프로젝트는 표준 Python 프로젝트처럼 설정됩니다. 초기화
+프로세스는 또한 `.venv` 아래에 저장된 이 프로젝트 내에서 virtualenv를 생성합니다.
+예배 규칙서. virtualenv를 생성하기 위해 `python3`이 있다고 가정합니다.
+(또는 Windows의 경우 `python`) `venv`에 대한 액세스 권한이 있는 경로에서 실행 가능
+패키지. 어떤 이유로든 virtualenv의 자동 생성이 실패하면,
+virtualenv를 수동으로 만들 수 있습니다.
 
 MacOS 및 Linux에서 virtualenv를 수동으로 생성하려면 아래와같이 실행합니다.
 
 ```
-$ python3 -m venv .venv
+python3 -m venv .venv
 ```
 
 초기화 프로세스가 완료되고 virtualenv가 생성되면 다음 단계를 사용하여 virtualenv를 활성화할 수 있습니다.
 
 ```
-$ source .venv/bin/activate
+source .venv/bin/activate
 ```
 
 Windows 플랫폼인 경우 다음과 같이 virtualenv를 활성화합니다.
@@ -88,14 +89,14 @@ virtualenv가 활성화되면 필요한 종속성을 설치할 수 있습니다.
 다른 CDK 라이브러리와 같은 추가 종속성을 추가하려면 setup.py 파일에 추가하고 pip install -r requirements.txt 명령을 다시 실행하기만 하면 됩니다.
 
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 # Ready to deploy
 CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만 실행해주면 됩니다.
 
 ```
-$ cdk bootstrap
+cdk bootstrap
 ```
  ⏳  Bootstrapping environment aws://123456789012/us-east-1...<br>
  ✅  Environment aws://123456789012/us-east-1 bootstrapped (no changes).
@@ -106,8 +107,8 @@ $ cdk bootstrap
 디렉토리를 만들고 아래 다음 코드를 작성합니다.
 
 ```
-$ mkdir lambda
-$ touch lambda/handler.py
+mkdir lambda
+touch lambda/handler.py
 ```
 
 lambda/handler.py 코드를 작성합니다.
@@ -262,37 +263,38 @@ DynamoDB Data Modeling 내용이 궁금하시면 [here](https://festive-giver-f0
 Docker 컨테이너에서 DynamoDB를 동작하도록 구성을 합니다.
 
 ```
-$ docker pull amazon/dynamodb-local
+docker pull amazon/dynamodb-local
 ```
-```
+<pre>
 sing default tag: latest
 latest: Pulling from amazon/dynamodb-local
 Digest: sha256:bdd26570dc0e0ae49e1ea9d49ff662a6a1afe9121dd25793dc40d02802e7e806
 Status: Image is up to date for amazon/dynamodb-local:latest
 docker.io/amazon/dynamodb-local:latest
-```
+</pre>
 
 ```
-$ docker network create ddb-network
-$ docker network ls
+docker network create ddb-network
+docker network ls
 ```
 network list를 확인해봅니다.
-```
+
+<pre>
 NETWORK ID     NAME          DRIVER    SCOPE
 1f9367e4af57   bridge        bridge    local
 045a3713c683   ddb-network   bridge    local
 f6567b43ebd6   host          host      local
 5b53f6defb87   none          null      local
-```
+</pre>
 
 ```
-$ docker run --network ddb-network --name dynamodb -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb
+docker run --network ddb-network --name dynamodb -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb
 
 ```
 "Ctrl+C"로 컨테이너를 중지하고 
 
 ```
-$ docker start dynamodb
+docker start dynamodb
 ```
 을 실행하여 백그라운드에서 DynamoDB를 시작합니다.
 
@@ -300,29 +302,28 @@ $ docker start dynamodb
 ## Add Table in DynamoDB-Local
 현재 로컬 DynamoDB에는 테이블이 없기 때문에 앞서 정의한 'ddb/model.json'에 정의된 내용으로 테이블을 생성합니다.
 ```
-$ aws dynamodb create-table --cli-input-json file://./ddb/model.json --endpoint-url http://localhost:8000
+aws dynamodb create-table --cli-input-json file://./ddb/model.json --endpoint-url http://localhost:8000
 
 ```
 이제 로컬 DynamoDB 테이블이 생성되었습니다.
 
 ## Run Lambda-Local 
-먼저 CloudFormation 템플릿을 생성하고 template.yaml 파일로 저장합니다.<br>
-cdk를 local에서 실행하기위해 sam 명령어를 실행하는데, 이때 template.yaml파일이 필요합니다.
+cdk를 local에서 실행하기위해 sam 명령어를 실행해볼예정인데요, 이때 template.yaml파일이 필요합니다.
 ```
 cdk synth --no-staging > template.yaml
 ```
 
 로컬 DynamoDB의 컨테이너와 통신하기 위해 '--docker-netork'옵션이 필요하게되므로 주의하십시오.
 ```
-$ sam local start-api --docker-network ddb-network
+sam local start-api --docker-network ddb-network
 ```
 
 Cloud9 터미널에서 curl 명령어로 'POST' 엑세스합니다.
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data", "local": true}' http://127.0.0.1:3000/ddb
+curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data", "local": true}' http://127.0.0.1:3000/ddb
 ```
 
-```
+<pre>
 Mounting backendCBA98286 at http://127.0.0.1:3000/ddb [POST]
 You can now browse to the above endpoints to invoke your functions. You do not need to restart/reload SAM CLI while working on your functions, changes will be reflected instantly/automatically. You only need to restart SAM CLI if you update your AWS SAM template
 2021-07-25 16:09:58  * Running on http://127.0.0.1:3000/ (Press CTRL+C to quit)
@@ -335,18 +336,18 @@ END RequestId: c85e7f2d-43b4-43d7-9a88-7780d89c5e22
 REPORT RequestId: c85e7f2d-43b4-43d7-9a88-7780d89c5e22  Init Duration: 0.39 ms  Duration: 264.50 ms     Billed Duration: 300 ms Memory Size: 128 MB     Max Memory Used: 128 MB
 No Content-Type given. Defaulting to 'application/json'.
 2021-07-25 16:10:12 127.0.0.1 - - [25/Jul/2021 16:10:12] "POST /ddb HTTP/1.1" 200 -
-```
+</pre>
 
 
 실행결과가 표시되면 성공입니다.
-```
+<pre>
 {"message": "succeeded"}
-```
+</pre>
 
-## validation DB
+## validation Database
 실제로 데이터가 로컬 DynamoDB에 등록되어있는지 확인합니다.
 ```
-$ aws dynamodb scan --table-name Demo --endpoint-url http://localhost:8000
+aws dynamodb scan --table-name Demo --endpoint-url http://localhost:8000
 ```
 
 ```json
@@ -372,8 +373,8 @@ Lambda 환경에서 'Ctrl+C'로 종료합니다.<br>
 그리고 DynamoDB 내용은 다음 명령으로 종료합니다.
 
 ```
-$ docker stop dynamodb
-$ docker rm dynamodb
+docker stop dynamodb
+docker rm dynamodb
 ```
 
 
@@ -381,25 +382,25 @@ $ docker rm dynamodb
 CDK deploy 명령어로 클라우드 배포를 진행합니다.
 Synthesize (cdk synth) or deploy (cdk deploy) the example
 ```
-$ cdk deploy
+cdk deploy
 ```
 
 # Testing the app
 
-Sample Lambda endpoint의 resource 'ddb'에 POST로 요청후, DynamoDB Table Demo과 Items를 확인해봅니다.
+Sample Lambda endpoint의 resource 'ddb'에 POST로 요청후, DynamoDB Table Demo과 Items를 확인해봅니다.( endpoint 마지막에 ddb리소스가 있습니다.)
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://**********.execute-api.us-east-1.amazonaws.com/prod/ddb
+curl -X POST -H "Content-Type: application/json" -d '{"key": "demo-data"}' https://**********.execute-api.us-east-1.amazonaws.com/prod/ddb
 {"message": "succeeded"}
 ```
 
 정리하려면 다음 명령을 실행합니다(DynamoDB 테이블, CloudWatch 로그 또는 S3 버킷은 제거되지 않습니다. 수동으로 수행해야 함).
 ```
-$ cdk destroy
+cdk destroy
 ```
 
-To exit the virtualenv python environment:
+virtualenv 파이썬 환경을 종료하려면:
 ```
-$ deactivate
+deactivate
 ```
 
 
