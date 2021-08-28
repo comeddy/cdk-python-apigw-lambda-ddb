@@ -2,32 +2,46 @@
 # Introduction
 본 실습은 애플리케이션을 개발하기 위하여 CDK를 이용하여 인프라 및 개발 소스를 배포하는 방법을 살펴 봅니다.<br>
 Python언어을 이용하여 차례대로 Lambda, DynamoDB 그리고 API Gateway를 구성해봅니다.
-- CDK를 이용하여 API Gateway, lambda와 Amazon DynamoDB 클라우드 환경으로 Stack을 배포해봅니다.   
+- CDK를 이용하여 API Gateway, Lambda와 Amazon DynamoDB 클라우드 환경으로 Stack을 배포해봅니다.   
 - SAM을 이용하여 Local lambda를 호출해 Local Container DynamoDB를 구성한 로컬개발환경도 만들어봅니다.
 
 
 # Prerequisites
-사용자는 AWS Cloud9을 원하는 리전에 구성한 후, aws-cdk를 최신버전으로 설치합니다.<br>
-CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요한 경우 option --force)
+* An AWS profile with permissions to create AWS Identity and Access Management (AWS IAM) roles, Studio domains, and Studio user profiles
+* AWS CLI, authenticated and configured
+* Python 3.6+
+* AWS CDK
+* Git
+* AWS Cloud9
+* Knowledge on how Amazon API Gateway, Lambda and DynamoDB
 
-- Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
-- Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
-```
-npm install -g aws-cdk --force
-```
 
-기본설치된 node버전 v10.24.1의 EOS 안내를 원치않는 경우, node를 최신버전으로 설치합니다.
+## Started AWS Cloud9
 
-```
-nvm install node
-```
+* Sign in to the [AWS Management Console](https://console.aws.amazon.com/)
+* Go to [Cloud9](https://console.aws.amazon.com/cloud9/) environment. and Click Open IDE
 
-설치된 CDK버전을 확인합니다.
-```
-cdk --version
-```
-$ cdk --version 
-1.115.0 (build 7e41b6b)
+
+AWS Cloud9 사용자는 Node(v10.24.1)의 EOS메시지를 원하지 않은경우, 아래 Node와 AWS CDK 업데이트를 참고하십시오. <br>
+기본설치된 node를 특정버전으로 설치할 경우(예, v14.5.0로 설치시)<br> 
+
+* 예) v14.5.0 설치시 -> nvm install 14.5.0
+
+Node를 최신버전으로 설치합니다.
+
+`nvm install node`
+
+AWS Cloud9 사용자는 aws-cdk 최신버전으로 설치합니다.<br>
+CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요한 경우 option --force) <br>
+
+* 예) npm install -g aws-cdk --force
+
+`npm install -g aws-cdk`
+
+업데이트된 Node와 CDK 버전이 제대로 나오는지 확인합니다.
+
+`node -v` <br>
+`cdk --version`
 
 # Project creation
 
