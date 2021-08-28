@@ -16,8 +16,8 @@ CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요�
 npm install -g aws-cdk --force
 ```
 
-(option) node를 최신버전으로 설치합니다.
-* Node Version Manager Go to [Node](https://github.com/nvm-sh/nvm#automatically-call-nvm-use) environment. and Click Open IDE 
+기본설치된 node버전 v10.24.1의 EOS 안내를 원치않는 경우, node를 최신버전으로 설치합니다.
+
 ```
 nvm install node
 ```
