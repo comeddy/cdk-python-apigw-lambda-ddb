@@ -6,7 +6,7 @@ Python언어을 이용하여 차례대로 Lambda, DynamoDB 그리고 API Gateway
 - SAM을 이용하여 Local lambda를 호출해 Local Container DynamoDB를 구성한 로컬개발환경도 만들어봅니다.
 
 
-# Prerequisites
+## Prerequisites
 * An AWS profile with permissions to create AWS Identity and Access Management (AWS IAM) roles, Studio domains, and Studio user profiles
 * AWS CLI, authenticated and configured
 * Python 3.6+
@@ -47,10 +47,8 @@ CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요�
 
 CDK 작업디렉토리 생성합니다.
 
-```
-mkdir cdk
-cd cdk
-```
+`mkdir cdk`<br>
+`cd cdk`
 
 CDK init 명령어를 이용해서 python 프로젝트를 만들어봅니다.
 
@@ -59,7 +57,7 @@ cdk init --language=python
 ```
 Applying project template app for python
 
-# Welcome to your CDK Python project!
+## Welcome to your CDK Python project!
 
 이것은 CDK를 사용한 Python 개발을 위한 빈 프로젝트입니다.
 
@@ -74,23 +72,15 @@ virtualenv를 수동으로 만들 수 있습니다.
 
 MacOS 및 Linux에서 virtualenv를 수동으로 생성하려면 아래와같이 실행합니다.
 
-```
-python3 -m venv .venv
-```
+`macOS/Linux: python3 -m venv .venv`<br>
+`Windows: python -m venv .venv`
 
 초기화 프로세스가 완료되고 virtualenv가 생성되면 다음 단계를 사용하여 virtualenv를 활성화할 수 있습니다.
 
-```
-source .venv/bin/activate
-```
+`macOS/Linux: source .venv/bin/activate`<br>
+`Windows: .venv\Scripts\activate.bat`
 
-Windows 플랫폼인 경우 다음과 같이 virtualenv를 활성화합니다.
-
-```
-% .venv\Scripts\activate.bat
-```
-
-# Add module
+## Add module
 
 Setup.py에 필요한 모듈을 추가합니다.
 apigateway, lambda, dynamodb를 함께 추가합니다.
@@ -112,7 +102,7 @@ virtualenv가 활성화되면 필요한 종속성을 설치할 수 있습니다.
 pip install -r requirements.txt
 ```
 
-# Ready to deploy
+## Ready to deploy
 AWS CDK가 배포수행하는데 필요한 리소스를 프로비저닝하도록 브트스트랩 스택을 설치합니다.
 
 ```
@@ -122,14 +112,12 @@ cdk bootstrap
  ✅  Environment aws://123456789012/us-east-1 bootstrapped (no changes).
 
 
-# Lambda code
+## Lambda code
 
 디렉토리를 만들고 아래 다음 코드를 작성합니다.
 
-```
-mkdir lambda
-touch lambda/handler.py
-```
+`mkdir lambda`<br>
+`touch lambda/handler.py`
 
 lambda/handler.py 코드를 작성합니다.
 
@@ -175,7 +163,7 @@ def lambda_handler(event, context):
     }
 ```
 
-# Deployment & Provisioning code creation
+## Deployment & Provisioning code creation
 
 프로젝트 root 디렉토리의 app.py을 아래와 같이 변경합니다.
 
@@ -242,10 +230,9 @@ app.synth()
 
 ## Table define
 
-```
-mkdir ddb
-touch ddb/model.json
-```
+`mkdir ddb`<br>
+`touch ddb/model.json`
+
 ddb 디렉토리를 만들고, 테이블 구조를 json 파일형식으로 작성합니다.<br>
 DynamoDB Data Modeling 내용이 궁금하시면 [here](https://festive-giver-f02.notion.site/SEC-MC-Game-Launcher-e3b7c76ffd0b4492a7b3bdc7a14df90a) 
 
