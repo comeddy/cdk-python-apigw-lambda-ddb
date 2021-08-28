@@ -16,6 +16,12 @@ CDK버전은 최신버전 설치를 추천드립니다.(강제옵션이 필요�
 npm install -g aws-cdk --force
 ```
 
+(option) node를 최신버전으로 설치합니다.
+* Node Version Manager Go to [Node](https://github.com/nvm-sh/nvm#automatically-call-nvm-use) environment. and Click Open IDE 
+```
+nvm install node
+```
+
 설치된 CDK버전을 확인합니다.
 ```
 cdk --version
@@ -93,7 +99,7 @@ pip install -r requirements.txt
 ```
 
 # Ready to deploy
-CDK Toolkit Stack을 S3에 만들기 위하여 bootstrap을 합니다. 한번만 실행해주면 됩니다.
+AWS CDK가 배포수행하는데 필요한 리소스를 프로비저닝하도록 브트스트랩 스택을 설치합니다.
 
 ```
 cdk bootstrap
