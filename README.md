@@ -389,6 +389,10 @@ docker rm dynamodb
 CDK deploy 명령어로 클라우드 배포를 진행합니다.
 Synthesize (cdk synth) or deploy (cdk deploy) the example
 ```
+cdk synth
+```
+
+```
 cdk deploy
 ```
 
