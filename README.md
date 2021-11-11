@@ -101,8 +101,8 @@ virtualenv가 활성화되면 필요한 종속성을 설치할 수 있습니다.
 pip install -r requirements.txt
 ```
 
-만약 Setup.py 파일이 없을경우 직접 설치도 가능합니다.
-```
+만약 Setup.py 파일이 없을경우 직접 설치로 실행합니다.
+```shell
 pip install aws-cdk.aws-apigateway
 pip install aws-cdk.aws-lambda
 pip install aws-cdk.aws-dynamodb
