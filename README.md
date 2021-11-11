@@ -97,10 +97,19 @@ apigateway, lambda, dynamodb를 함께 추가합니다.
 
 virtualenv가 활성화되면 필요한 종속성을 설치할 수 있습니다. <br>
 다른 CDK 라이브러리와 같은 추가 종속성을 추가하려면 setup.py 파일에 추가하고 pip install -r requirements.txt 명령을 다시 실행하기만 하면 됩니다.
-
 ```
 pip install -r requirements.txt
 ```
+
+만약 Setup.py 파일이 없을경우 직접 설치도 가능합니다.
+```
+pip install aws-cdk.aws-apigateway
+pip install aws-cdk.aws-lambda
+pip install aws-cdk.aws-dynamodb
+pip install boto3
+pip install aws-cdk.core==1.xxx.0
+```
+
 
 ## Ready to deploy
 AWS CDK가 배포수행하는데 필요한 리소스를 프로비저닝하도록 브트스트랩 스택을 설치합니다.
